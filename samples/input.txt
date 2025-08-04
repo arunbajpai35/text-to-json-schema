@@ -1,0 +1,1 @@
+Arun Bajpai is a Backend Engineer with experience in Golang, Python, and AI systems. He worked on projects like GoJobberX and GoDebug Assistant.

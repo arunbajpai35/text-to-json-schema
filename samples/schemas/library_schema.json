@@ -1,0 +1,121 @@
+{
+  "type": "object",
+  "properties": {
+    "library": {
+      "type": "object",
+      "properties": {
+        "books": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": {"type": "string"},
+              "author": {
+                "type": "object",
+                "properties": {
+                  "name": {"type": "string"},
+                  "birthYear": {"type": "integer"},
+                  "nationality": {"type": "string"},
+                  "biography": {
+                    "type": "object",
+                    "properties": {
+                      "earlyLife": {
+                        "type": "object",
+                        "properties": {
+                          "birthplace": {"type": "string"},
+                          "education": {
+                            "type": "object",
+                            "properties": {
+                              "institutions": {
+                                "type": "array",
+                                "items": {"type": "string"}
+                              },
+                              "degrees": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "field": {"type": "string"},
+                                    "level": {"type": "string"},
+                                    "year": {"type": "integer"}
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "career": {
+                        "type": "object",
+                        "properties": {
+                          "achievements": {
+                            "type": "array",
+                            "items": {"type": "string"}
+                          },
+                          "awards": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "name": {"type": "string"},
+                                "year": {"type": "integer"},
+                                "category": {"type": "string"}
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": ["name"]
+              },
+              "genres": {
+                "type": "array",
+                "items": {"type": "string"}
+              },
+              "publication": {
+                "type": "object",
+                "properties": {
+                  "publisher": {"type": "string"},
+                  "year": {"type": "integer"},
+                  "location": {
+                    "type": "object",
+                    "properties": {
+                      "city": {"type": "string"},
+                      "country": {"type": "string"},
+                      "coordinates": {
+                        "type": "object",
+                        "properties": {
+                          "latitude": {"type": "number"},
+                          "longitude": {"type": "number"}
+                        }
+                      }
+                    }
+                  },
+                  "edition": {"type": "string"},
+                  "isbn": {"type": "string"}
+                }
+              },
+              "availability": {"type": "boolean"},
+              "metadata": {
+                "type": "object",
+                "properties": {
+                  "pages": {"type": "integer"},
+                  "language": {"type": "string"},
+                  "format": {"type": "string"},
+                  "tags": {
+                    "type": "array",
+                    "items": {"type": "string"}
+                  }
+                }
+              }
+            },
+            "required": ["title", "author", "availability"]
+          }
+        }
+      }
+    }
+  },
+  "required": ["library"]
+} 

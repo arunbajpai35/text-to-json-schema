@@ -1,0 +1,6 @@
+The dataset contains information about books in a library. Each book has:
+- A title (string)
+- An author object with name (string), birth year (integer), and nationality (string)
+- A list of genres (array of strings)
+- A publication object with publisher (string), year (integer), and location (object with city and country)
+- An availability flag (boolean)
