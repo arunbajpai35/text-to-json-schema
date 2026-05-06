@@ -68,28 +68,22 @@ Instructions:
     
     def extract_schema_fields(self, schema: Dict[str, Any]) -> List[str]:
         """
-        Extract all field names from a JSON schema for analysis
+        Extract all field paths from a JSON schema for analysis.
         """
-        fields = []
-        
-        def extract_fields(obj, path=""):
-            if isinstance(obj, dict):
-                if "properties" in obj:
-                    for field_name, field_schema in obj["properties"].items():
-                        current_path = f"{path}.{field_name}" if path else field_name
-                        fields.append(current_path)
-                        extract_fields(field_schema, current_path)
-                elif "items" in obj:
-                    extract_fields(obj["items"], path)
-                elif "type" in obj and obj["type"] == "object":
-                    # Handle nested objects
-                    if "properties" in obj:
-                        for field_name, field_schema in obj["properties"].items():
-                            current_path = f"{path}.{field_name}" if path else field_name
-                            fields.append(current_path)
-                            extract_fields(field_schema, current_path)
-        
-        extract_fields(schema)
+        fields: List[str] = []
+
+        def walk(obj, path=""):
+            if not isinstance(obj, dict):
+                return
+            if "properties" in obj:
+                for name, sub in obj["properties"].items():
+                    current = f"{path}.{name}" if path else name
+                    fields.append(current)
+                    walk(sub, current)
+            if "items" in obj:
+                walk(obj["items"], path)
+
+        walk(schema)
         return fields
     
     def analyze_schema_complexity(self, schema: Dict[str, Any]) -> Dict[str, Any]:

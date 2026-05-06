@@ -3,3 +3,12 @@ __pycache__/
 *.pyc
 .env
 .vscode/
+.idea/
+.venv/
+.pytest_cache/
+
+# generated artifacts
+samples/output.json
+samples/failed_chunks.json
+samples/input_50k_tokens.txt
+*_failed_chunks.json
