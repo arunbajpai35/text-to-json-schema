@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 from evals.score import aggregate, score_case
-from main import process_with_schema
+from main import process_with_schema, validate_config
 from utils.azure_llm import AzureOpenAIClient
 from utils.config_loader import load_config
 from utils.schema_processor import SchemaProcessor
@@ -38,6 +38,17 @@ def main() -> int:
     logging.basicConfig(level=logging.WARNING, format="%(levelname)s %(message)s")
 
     config = load_config()
+    try:
+        validate_config(config)
+    except ValueError as e:
+        print(
+            f"config error: {e}\n"
+            "set AZURE_OPENAI_API_KEY, AZURE_OPENAI_ENDPOINT, "
+            "AZURE_OPENAI_DEPLOYMENT, AZURE_OPENAI_API_VERSION, "
+            "or fill in config.ini.",
+            file=sys.stderr,
+        )
+        return 1
     client = AzureOpenAIClient(config["azure"])
     processor = SchemaProcessor()
 
