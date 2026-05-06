@@ -1,34 +1,30 @@
 import json
+from typing import Any, Dict, List, Tuple
+
 import jsonschema
-from typing import Dict, Any, List, Optional
 from jsonschema import ValidationError
 
+
 class SchemaProcessor:
-    def __init__(self):
-        self.validation_errors = []
-    
-    def validate_against_schema(self, data: Dict[str, Any], schema: Dict[str, Any]) -> bool:
-        """
-        Validate that the output data matches the target schema
-        """
+    def validate_against_schema(
+        self, data: Dict[str, Any], schema: Dict[str, Any]
+    ) -> Tuple[bool, List[str]]:
+        """Return (ok, errors). Errors is empty when ok is True."""
         try:
             jsonschema.validate(instance=data, schema=schema)
-            return True
+            return True, []
         except ValidationError as e:
-            self.validation_errors.append(str(e))
-            return False
-    
-    def merge_chunk_results(self, chunk_results: List[Dict[str, Any]], schema: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Merge results from multiple chunks into a single output.
+            return False, [str(e)]
 
-        Dicts are merged recursively. Arrays are concatenated. For scalar
-        conflicts, the first non-null value wins — chunk order reflects
-        input order, so earlier mentions are treated as authoritative.
+    def merge_chunk_results(self, chunk_results: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """Merge chunk outputs into a single object.
+
+        Dicts merge recursively. Arrays concatenate. For scalar conflicts, the
+        first non-null value wins — chunk order reflects input order, so earlier
+        mentions are treated as authoritative.
         """
         if not chunk_results:
             return {}
-
         merged: Dict[str, Any] = {}
         for result in chunk_results:
             if isinstance(result, dict):
@@ -46,11 +42,8 @@ class SchemaProcessor:
         if a is None or a == "":
             return b
         return a
-    
+
     def create_schema_prompt(self, schema: Dict[str, Any]) -> str:
-        """
-        Create a prompt that includes the target schema
-        """
         schema_str = json.dumps(schema, indent=2)
         return f"""You convert unstructured text into structured JSON.
 
@@ -65,11 +58,8 @@ Instructions:
 3. Return a single JSON object that matches the schema exactly — no prose, no markdown.
 4. If a required field is not present in the text, leave it null rather than inventing a value.
 """
-    
+
     def extract_schema_fields(self, schema: Dict[str, Any]) -> List[str]:
-        """
-        Extract all field paths from a JSON schema for analysis.
-        """
         fields: List[str] = []
 
         def walk(obj, path=""):
@@ -85,69 +75,42 @@ Instructions:
 
         walk(schema)
         return fields
-    
+
     def analyze_schema_complexity(self, schema: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Analyze schema complexity for processing optimization
-        """
         fields = self.extract_schema_fields(schema)
-        
-        # Count nested levels
-        max_depth = 0
-        for field in fields:
-            depth = field.count('.')
-            max_depth = max(max_depth, depth)
-        
-        # Count total fields
+        max_depth = max((f.count(".") for f in fields), default=0)
         total_fields = len(fields)
-        
-        # Analyze field types
-        field_types = {}
+
+        field_types: Dict[str, int] = {}
+
         def analyze_types(obj):
-            if isinstance(obj, dict):
-                if "type" in obj:
-                    # JSON Schema permits `type` to be a list (e.g. ["string", "null"]).
-                    types = obj["type"] if isinstance(obj["type"], list) else [obj["type"]]
-                    for t in types:
-                        field_types[t] = field_types.get(t, 0) + 1
-                if "properties" in obj:
-                    for field_schema in obj["properties"].values():
-                        analyze_types(field_schema)
-                if "items" in obj:
-                    analyze_types(obj["items"])
-        
+            if not isinstance(obj, dict):
+                return
+            if "type" in obj:
+                # JSON Schema permits `type` to be a list (e.g. ["string", "null"]).
+                types = obj["type"] if isinstance(obj["type"], list) else [obj["type"]]
+                for t in types:
+                    field_types[t] = field_types.get(t, 0) + 1
+            if "properties" in obj:
+                for sub in obj["properties"].values():
+                    analyze_types(sub)
+            if "items" in obj:
+                analyze_types(obj["items"])
+
         analyze_types(schema)
-        
+
         return {
             "total_fields": total_fields,
             "max_depth": max_depth,
             "field_types": field_types,
-            "complexity_score": total_fields * (max_depth + 1)
+            "complexity_score": total_fields * (max_depth + 1),
         }
-    
+
     def optimize_chunk_size(self, schema_complexity: Dict[str, Any]) -> int:
-        """
-        Optimize chunk size based on schema complexity
-        """
         complexity_score = schema_complexity.get("complexity_score", 0)
         total_fields = schema_complexity.get("total_fields", 0)
-        
-        # Adjust chunk size based on complexity
-        if complexity_score > 1000:  # Very complex schema
-            return 2000  # Smaller chunks for complex schemas
-        elif total_fields > 100:  # Many fields
-            return 2500  # Medium chunks
-        else:
-            return 3000  # Standard chunk size
-    
-    def get_validation_errors(self) -> List[str]:
-        """
-        Get list of validation errors
-        """
-        return self.validation_errors.copy()
-    
-    def clear_validation_errors(self):
-        """
-        Clear validation error history
-        """
-        self.validation_errors.clear() 
+        if complexity_score > 1000:
+            return 2000
+        if total_fields > 100:
+            return 2500
+        return 3000

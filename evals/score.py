@@ -4,6 +4,7 @@ Leaves are dotted paths into the expected document. An array is treated as a sin
 its value is compared as a multiset, so order doesn't matter but duplicates do.
 Missing or differing values count as a miss.
 """
+import json
 from collections import Counter
 from typing import Any, Dict, Iterable, Tuple
 
@@ -38,8 +39,16 @@ def _matches(expected: Any, actual: Any) -> bool:
         # the model correctly didn't hallucinate a value.
         return expected is None
     if isinstance(expected, list) and isinstance(actual, list):
-        return Counter(map(repr, expected)) == Counter(map(repr, actual))
+        # Stable serialization so {"a":1,"b":2} and {"b":2,"a":1} compare equal.
+        return Counter(map(_stable_key, expected)) == Counter(map(_stable_key, actual))
     return expected == actual
+
+
+def _stable_key(v: Any) -> str:
+    try:
+        return json.dumps(v, sort_keys=True)
+    except TypeError:
+        return repr(v)
 
 
 def score_case(expected: Dict[str, Any], actual: Dict[str, Any]) -> Dict[str, Any]:
