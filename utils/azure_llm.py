@@ -27,8 +27,9 @@ class AzureOpenAIClient:
                     {"role": "user", "content": user_input}
                 ],
                 temperature=0.3,
-                max_tokens=4096,  # reduce if needed
-                timeout=60        # increased timeout to 60 seconds
+                max_tokens=4096,
+                timeout=60,
+                response_format={"type": "json_object"},
             )
             print("[✅] Got response")
             return response.choices[0].message.content.strip()
