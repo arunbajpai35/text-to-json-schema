@@ -20,18 +20,32 @@ class SchemaProcessor:
     
     def merge_chunk_results(self, chunk_results: List[Dict[str, Any]], schema: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Merge results from multiple chunks into a single valid output
+        Merge results from multiple chunks into a single output.
+
+        Dicts are merged recursively. Arrays are concatenated. For scalar
+        conflicts, the first non-null value wins — chunk order reflects
+        input order, so earlier mentions are treated as authoritative.
         """
         if not chunk_results:
             return {}
-        
-        # Simple merge strategy - take the first valid result
+
+        merged: Dict[str, Any] = {}
         for result in chunk_results:
-            if self.validate_against_schema(result, schema):
-                return result
-        
-        # If no valid results, return empty dict
-        return {}
+            if isinstance(result, dict):
+                merged = self._deep_merge(merged, result)
+        return merged
+
+    def _deep_merge(self, a: Any, b: Any) -> Any:
+        if isinstance(a, dict) and isinstance(b, dict):
+            out = dict(a)
+            for k, v in b.items():
+                out[k] = self._deep_merge(a[k], v) if k in a else v
+            return out
+        if isinstance(a, list) and isinstance(b, list):
+            return a + b
+        if a is None or a == "":
+            return b
+        return a
     
     def create_schema_prompt(self, schema: Dict[str, Any]) -> str:
         """
