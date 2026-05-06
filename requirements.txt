@@ -1,8 +1,6 @@
 openai
-jsonschema
-typer==0.9.0
-pydantic
-python-dotenv
+httpx
 tiktoken
+jsonschema
 backoff
 pytest
