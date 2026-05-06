@@ -6,7 +6,7 @@ Brand: Apple
 Category: Computers
 Price: 1999.00
 
-Dimensions: 31.26 cm wide, 22.12 cm deep, 1.55 cm thick.
+Dimensions: Length 22.12 cm, Width 31.26 cm, Height 1.55 cm.
 
 Connectivity: Wi-Fi 6E, Bluetooth 5.3, Thunderbolt 4, HDMI, MagSafe 3
 Features: Liquid Retina XDR display, ProMotion, Spatial Audio

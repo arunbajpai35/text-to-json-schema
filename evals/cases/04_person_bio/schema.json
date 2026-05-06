@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "properties": {
+    "name": {"type": "string"},
+    "role": {"type": "string"},
+    "employer": {"type": "string"},
+    "location": {"type": "string"},
+    "yearsOfExperience": {"type": "integer"},
+    "education": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "degree": {"type": "string"},
+          "field": {"type": "string"},
+          "institution": {"type": "string"},
+          "year": {"type": "integer"}
+        }
+      }
+    },
+    "skills": {"type": "array", "items": {"type": "string"}},
+    "languages": {"type": "array", "items": {"type": "string"}}
+  },
+  "required": ["name", "role", "employer"]
+}

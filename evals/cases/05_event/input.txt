@@ -1,0 +1,20 @@
+PyData Bengaluru 2025 — Conference Announcement
+
+Event Name: PyData Bengaluru 2025
+Date: 2025-09-12
+End Date: 2025-09-14
+Venue: NIMHANS Convention Centre
+City: Bengaluru
+Country: India
+Capacity: 1200
+Registration Fee: 4500 INR
+
+Track Topics: Machine Learning, MLOps, Open Source Tooling, Data Engineering
+
+Confirmed Speakers:
+- Wes McKinney (Posit)
+- Jiaying Liu (DeepMind)
+- Suresh Iyer (independent)
+- Anika Rao (Cred)
+
+Sponsors: Microsoft, JetBrains, Anthropic

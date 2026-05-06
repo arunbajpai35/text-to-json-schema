@@ -1,0 +1,13 @@
+FOR IMMEDIATE RELEASE
+
+San Francisco, March 14, 2025 — Helio Robotics today unveiled the Helio R1, a residential cleaning robot that the company says will redefine what consumers expect from autonomous home appliances. The R1 will be available beginning May 6, 2025, exclusively through helio.com and select Best Buy locations across the United States, with a starting price of $899.
+
+The R1 is built around what Helio calls its "context-aware" navigation stack — a combination of LiDAR, monocular vision, and on-device neural networks that allow the robot to recognize and avoid more than 200 categories of household objects, including pet messes, charging cables, and small toys. The unit is rated for spaces up to 150 square meters, runs for approximately 180 minutes on a single charge, and returns to its dock automatically when the battery drops below 15 percent.
+
+"We started Helio because we couldn't believe how bad existing home robots still were in 2023," said co-founder and CEO Aditi Bhattacharya. "Our customers shouldn't have to babysit a $700 device. The R1 is the first machine in this category that genuinely understands the room it's in."
+
+Specifications: the R1 weighs 3.4 kilograms, measures 35 centimeters across, and is 9.2 centimeters tall. It is available in two finishes — Slate (charcoal grey) and Linen (off-white). The device is compatible with the Helio mobile app, which is available on iOS 16+ and Android 12+, and supports voice control via Alexa and Google Home. It does not currently support HomeKit; Helio has indicated HomeKit support will arrive in a software update later in 2025.
+
+Helio Robotics is headquartered in Palo Alto, California, and was founded in 2023 by Aditi Bhattacharya and Marcus Chen. The company has raised $42 million across two funding rounds, most recently a $30 million Series A led by Sequoia in November 2024.
+
+Press contact: press@helio.com

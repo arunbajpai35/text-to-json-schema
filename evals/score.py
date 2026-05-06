@@ -34,7 +34,9 @@ def _get(obj: Any, path: str) -> Any:
 
 def _matches(expected: Any, actual: Any) -> bool:
     if actual is _MISSING:
-        return False
+        # An absent field is the right answer when the labeled value is null:
+        # the model correctly didn't hallucinate a value.
+        return expected is None
     if isinstance(expected, list) and isinstance(actual, list):
         return Counter(map(repr, expected)) == Counter(map(repr, actual))
     return expected == actual

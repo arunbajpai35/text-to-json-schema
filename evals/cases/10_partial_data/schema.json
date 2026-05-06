@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "properties": {
+    "title": {"type": "string"},
+    "author": {"type": "string"},
+    "publisher": {"type": "string"},
+    "pageCount": {"type": "integer"},
+    "language": {"type": "string"},
+    "isbn": {"type": ["string", "null"]},
+    "publicationYear": {"type": ["integer", "null"]},
+    "genre": {"type": ["string", "null"]},
+    "priceUSD": {"type": ["number", "null"]}
+  },
+  "required": ["title", "author"]
+}

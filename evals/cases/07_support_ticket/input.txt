@@ -1,0 +1,17 @@
+From: priya.menon@example.com
+Subject: URGENT — checkout failing for premium subscribers
+
+Ticket ID: ZD-48217
+Priority: High
+Category: Billing
+Status: Open
+
+Customer: Priya Menon
+Customer Tier: Premium
+Account ID: ACCT-9381
+
+Issue: Premium subscribers (only) cannot complete checkout — the page hangs after clicking "Confirm" and the card is not charged. Started around 2025-04-30 14:00 UTC. Reproduced in Chrome and Safari on macOS. Free-tier users are unaffected.
+
+Requested Action: Roll back the v4.12 payment-service deploy and confirm card-on-file is still valid.
+
+Affected Users (estimated): 320

@@ -1,0 +1,32 @@
+{
+  "type": "object",
+  "properties": {
+    "name": {"type": "string"},
+    "startDate": {"type": "string"},
+    "endDate": {"type": "string"},
+    "venue": {"type": "string"},
+    "city": {"type": "string"},
+    "country": {"type": "string"},
+    "capacity": {"type": "integer"},
+    "registrationFee": {
+      "type": "object",
+      "properties": {
+        "amount": {"type": "number"},
+        "currency": {"type": "string"}
+      }
+    },
+    "tracks": {"type": "array", "items": {"type": "string"}},
+    "speakers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {"type": "string"},
+          "affiliation": {"type": "string"}
+        }
+      }
+    },
+    "sponsors": {"type": "array", "items": {"type": "string"}}
+  },
+  "required": ["name", "startDate", "venue", "city"]
+}

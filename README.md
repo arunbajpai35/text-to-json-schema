@@ -44,7 +44,7 @@ LLM calls are mocked; the suite runs without azure credentials.
 
 ## evals
 
-`evals/` is a small hand-labeled benchmark — a handful of `(input, schema, expected)` cases. The scorer flattens the expected output to dotted leaf paths and compares each one (arrays compared as multisets, so order doesn't matter). Runs against the live model:
+`evals/` is a hand-labeled benchmark — 10 `(input, schema, expected)` cases across product specs, person bios, event listings, recipes, support tickets, job postings, a messy press release, and a partial-data case that checks the model doesn't hallucinate values for fields the input genuinely lacked. Scoring flattens expected output to dotted leaf paths; arrays compare as multisets so order doesn't matter, and a missing field matches an expected `null` (the right answer when the input didn't contain that data). Runs against the live model:
 
 ```bash
 python -m evals.run

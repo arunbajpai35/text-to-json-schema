@@ -1,0 +1,17 @@
+{
+  "productName": "Helio R1",
+  "manufacturer": "Helio Robotics",
+  "launchDate": "2025-05-06",
+  "startingPriceUSD": 899,
+  "weightKg": 3.4,
+  "batteryLifeMinutes": 180,
+  "maxCoverageSquareMeters": 150,
+  "colorways": ["Slate", "Linen"],
+  "supportedVoiceAssistants": ["Alexa", "Google Home"],
+  "company": {
+    "headquarters": "Palo Alto, California",
+    "founded": 2023,
+    "founders": ["Aditi Bhattacharya", "Marcus Chen"],
+    "totalFundingUSDMillions": 42
+  }
+}

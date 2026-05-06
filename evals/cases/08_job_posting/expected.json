@@ -1,0 +1,24 @@
+{
+  "title": "Senior Backend Engineer",
+  "company": "Beacon Analytics",
+  "location": "Remote (India)",
+  "employmentType": "Full-time",
+  "yearsRequired": 5,
+  "salaryRange": {"min": 35, "max": 55, "unit": "LPA", "currency": "INR"},
+  "responsibilities": [
+    "Design and own backend services in Go",
+    "Improve throughput and latency of the event-ingestion pipeline",
+    "Mentor mid-level engineers",
+    "Drive on-call quality and observability"
+  ],
+  "requirements": [
+    "5+ years of backend experience in Go or Java",
+    "Strong SQL and at least one warehouse (BigQuery, Snowflake, Redshift)",
+    "Experience with Kafka or similar streaming systems",
+    "Comfortable with Kubernetes and Terraform"
+  ],
+  "niceToHave": [
+    "Experience with Clickhouse",
+    "Open-source contributions"
+  ]
+}

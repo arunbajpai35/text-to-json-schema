@@ -26,6 +26,23 @@ def test_score_case_partial_match_and_missing():
     assert paths["c"]["missing"] is True
 
 
+def test_score_case_missing_matches_expected_null():
+    """Don't penalize the model for omitting a field that the input genuinely lacked."""
+    expected = {"a": 1, "isbn": None}
+    actual = {"a": 1}
+    score = score_case(expected, actual)
+    assert score["matched"] == 2
+    assert score["accuracy"] == 1.0
+
+
+def test_score_case_hallucinated_value_for_null_expected_is_a_miss():
+    """A made-up value when the input had nothing to extract is wrong."""
+    expected = {"isbn": None}
+    actual = {"isbn": "978-fake"}
+    score = score_case(expected, actual)
+    assert score["matched"] == 0
+
+
 def test_score_case_array_with_different_multiplicity_is_a_miss():
     expected = {"a": [1, 2, 2]}
     actual = {"a": [1, 2]}
