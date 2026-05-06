@@ -46,6 +46,18 @@ def parse_arguments():
         default=None,
         help="Maximum tokens per chunk. Defaults to a schema-complexity heuristic.",
     )
+    parser.add_argument(
+        "--max-tokens",
+        type=int,
+        default=4096,
+        help="max_tokens passed to the model on each call.",
+    )
+    parser.add_argument(
+        "--rate-limit-sleep",
+        type=float,
+        default=1.0,
+        help="Seconds to sleep between chunks. Set to 0 to rely on backoff for 429 handling.",
+    )
     parser.add_argument("--verbose", "-v", action="store_true", help="Verbose logging")
     return parser.parse_args()
 
@@ -70,6 +82,7 @@ def process_with_schema(
     client: AzureOpenAIClient,
     processor: SchemaProcessor,
     chunk_size: int | None = None,
+    rate_limit_sleep: float = 1.0,
     verbose: bool = False,
 ):
     complexity = processor.analyze_schema_complexity(schema)
@@ -102,7 +115,6 @@ def process_with_schema(
         try:
             parsed, raw = _completion_with_repair(client, system_prompt, chunk)
             chunk_results.append(parsed)
-            sleep(1)
         except json.JSONDecodeError as e:
             log.warning("chunk %d invalid json after repair: %s", idx + 1, e)
             failed_chunks.append({
@@ -110,20 +122,17 @@ def process_with_schema(
                 "raw_output": raw,
                 "error": f"JSON decode error: {e}",
             })
-        except Exception as e:
-            log.warning("chunk %d failed: %s", idx + 1, e)
-            failed_chunks.append({
-                "chunk_index": idx,
-                "raw_output": raw,
-                "error": str(e),
-            })
+        # Other exceptions (auth, transient API errors after backoff exhausted,
+        # programmer errors) are intentionally NOT caught — they bubble up to
+        # main() so the operator sees the real failure instead of a silent
+        # sidecar entry that looks like a model output problem.
+        if rate_limit_sleep > 0:
+            sleep(rate_limit_sleep)
 
-    final_result = processor.merge_chunk_results(chunk_results, schema)
-    if not processor.validate_against_schema(final_result, schema):
-        log.warning(
-            "merged output does not match schema: %s",
-            "; ".join(processor.get_validation_errors()),
-        )
+    final_result = processor.merge_chunk_results(chunk_results)
+    ok, errors = processor.validate_against_schema(final_result, schema)
+    if not ok:
+        log.warning("merged output does not match schema: %s", "; ".join(errors))
     return final_result, failed_chunks
 
 
@@ -143,7 +152,7 @@ def main() -> int:
         config = load_config()
         validate_config(config)
 
-        client = AzureOpenAIClient(config["azure"])
+        client = AzureOpenAIClient(config["azure"], max_tokens=args.max_tokens)
         processor = SchemaProcessor()
 
         input_text = read_file(args.input)
@@ -158,7 +167,10 @@ def main() -> int:
             raise ValueError(f"invalid JSON schema: {e}")
 
         result, failed_chunks = process_with_schema(
-            input_text, schema, client, processor, args.chunk_size, args.verbose
+            input_text, schema, client, processor,
+            chunk_size=args.chunk_size,
+            rate_limit_sleep=args.rate_limit_sleep,
+            verbose=args.verbose,
         )
 
         write_json(args.output, result)
