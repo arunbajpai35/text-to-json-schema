@@ -1,6 +1,6 @@
 # text-to-json-schema
 
-CLI that converts unstructured text into a JSON object matching a target [JSON Schema](https://json-schema.org/), using Azure OpenAI. Built as a take-home for Metaforms.ai.
+CLI that converts unstructured text into a JSON object matching a target [JSON Schema](https://json-schema.org/), using Azure OpenAI.
 
 ## quickstart
 
@@ -23,7 +23,7 @@ python main.py --input samples/input_large.txt \
 
 ## design choices
 
-- **schema embedded in the prompt, not derived from the text.** A fuzzy free-form extraction would have been simpler but the assignment is specifically about hitting a target shape — pinning the schema in the system prompt keeps the model honest.
+- **schema embedded in the prompt, not derived from the text.** A fuzzy free-form extraction would have been simpler, but the goal is to hit a target shape exactly — pinning the schema in the system prompt keeps the model honest.
 - **chunk-then-merge instead of streaming a single huge call.** Lets the tool handle inputs that don't fit the model context window. The trade-off is that the merge step has to actually be correct (early versions kept only the first chunk — fixed).
 - **first non-null wins on scalar conflicts.** The input is read top-to-bottom; the first mention of a value is usually the canonical one. Last-wins would let later, parenthetical mentions overwrite the headline value.
 - **validate the merged whole, not each chunk.** Required fields are usually scattered across the input; an early version validated each chunk in isolation and threw away every chunk that lacked a required field, ending up with `{}`. The merge happens first, schema validation runs on the result, and the partial output is preserved with a warning even if it falls short.
@@ -73,4 +73,4 @@ The single miss is the most interesting result, not a bug: the partial-data case
 
 ## stack
 
-python · azure openai (gpt-4o family) · tiktoken · jsonschema · backoff · pytest
+python · azure openai (gpt-4.1-mini in the eval results above) · tiktoken · jsonschema · backoff · pytest
