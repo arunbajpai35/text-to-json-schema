@@ -43,11 +43,25 @@ def parse_arguments():
         "--chunk-size",
         "-c",
         type=int,
-        default=3000,
-        help="Maximum tokens per chunk (overridden by schema-complexity heuristic)",
+        default=None,
+        help="Maximum tokens per chunk. Defaults to a schema-complexity heuristic.",
     )
     parser.add_argument("--verbose", "-v", action="store_true", help="Verbose logging")
     return parser.parse_args()
+
+
+def _completion_with_repair(client, system_prompt, chunk):
+    """Ask the model for JSON; on a parse failure, re-prompt once with the error."""
+    raw = client.get_completion(system_prompt, chunk)
+    try:
+        return json.loads(raw), raw
+    except json.JSONDecodeError as e:
+        repair_prompt = (
+            f"{system_prompt}\n\nThe previous response failed to parse as JSON: "
+            f"{e}. Return only a valid JSON object."
+        )
+        raw = client.get_completion(repair_prompt, chunk)
+        return json.loads(raw), raw
 
 
 def process_with_schema(
@@ -55,22 +69,25 @@ def process_with_schema(
     schema: dict,
     client: AzureOpenAIClient,
     processor: SchemaProcessor,
-    chunk_size: int = 3000,
+    chunk_size: int | None = None,
     verbose: bool = False,
 ):
     complexity = processor.analyze_schema_complexity(schema)
-    optimized_chunk_size = processor.optimize_chunk_size(complexity)
+    effective_chunk_size = (
+        chunk_size if chunk_size is not None
+        else processor.optimize_chunk_size(complexity)
+    )
 
     log.info(
         "schema: fields=%d depth=%d complexity=%d chunk_size=%d",
         complexity["total_fields"],
         complexity["max_depth"],
         complexity["complexity_score"],
-        optimized_chunk_size,
+        effective_chunk_size,
     )
 
     system_prompt = processor.create_schema_prompt(schema)
-    chunks = chunk_text(text, max_tokens=optimized_chunk_size)
+    chunks = chunk_text(text, max_tokens=effective_chunk_size)
     if not chunks:
         raise ValueError("no text chunks generated from input")
 
@@ -81,23 +98,23 @@ def process_with_schema(
 
     for idx, chunk in enumerate(chunks):
         log.debug("chunk %d/%d", idx + 1, len(chunks))
-        result = ""
+        raw = ""
         try:
-            result = client.get_completion(system_prompt, chunk)
-            chunk_results.append(json.loads(result))
+            parsed, raw = _completion_with_repair(client, system_prompt, chunk)
+            chunk_results.append(parsed)
             sleep(1)
         except json.JSONDecodeError as e:
-            log.warning("chunk %d invalid json: %s", idx + 1, e)
+            log.warning("chunk %d invalid json after repair: %s", idx + 1, e)
             failed_chunks.append({
                 "chunk_index": idx,
-                "raw_output": result,
+                "raw_output": raw,
                 "error": f"JSON decode error: {e}",
             })
         except Exception as e:
             log.warning("chunk %d failed: %s", idx + 1, e)
             failed_chunks.append({
                 "chunk_index": idx,
-                "raw_output": result,
+                "raw_output": raw,
                 "error": str(e),
             })
 
