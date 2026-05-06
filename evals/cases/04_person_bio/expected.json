@@ -1,0 +1,14 @@
+{
+  "name": "Dr. Maya Krishnan",
+  "role": "Principal Research Scientist",
+  "employer": "NeuroGrid Labs",
+  "location": "Berlin, Germany",
+  "yearsOfExperience": 12,
+  "education": [
+    {"degree": "PhD", "field": "Computational Neuroscience", "institution": "ETH Zurich", "year": 2014},
+    {"degree": "MSc", "field": "Applied Mathematics", "institution": "Indian Institute of Science", "year": 2009},
+    {"degree": "BSc", "field": "Physics", "institution": "University of Delhi", "year": 2007}
+  ],
+  "skills": ["PyTorch", "JAX", "Triton", "distributed training", "diffusion models", "mechanistic interpretability"],
+  "languages": ["English", "German", "Hindi", "Tamil"]
+}

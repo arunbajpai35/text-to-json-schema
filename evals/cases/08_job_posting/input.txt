@@ -1,0 +1,25 @@
+Job Title: Senior Backend Engineer
+Company: Beacon Analytics
+Location: Remote (India)
+Employment Type: Full-time
+Experience Required (years): 5
+Salary Range: 35-55 LPA INR
+
+About the role:
+We are looking for a senior backend engineer to own our event-ingestion pipeline. You will work on Go services that process 50k events per second, design schemas for analytics workloads, and partner with the data team on warehouse modeling.
+
+Responsibilities:
+- Design and own backend services in Go
+- Improve throughput and latency of the event-ingestion pipeline
+- Mentor mid-level engineers
+- Drive on-call quality and observability
+
+Requirements:
+- 5+ years of backend experience in Go or Java
+- Strong SQL and at least one warehouse (BigQuery, Snowflake, Redshift)
+- Experience with Kafka or similar streaming systems
+- Comfortable with Kubernetes and Terraform
+
+Nice to have:
+- Experience with Clickhouse
+- Open-source contributions

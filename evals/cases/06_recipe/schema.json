@@ -1,0 +1,14 @@
+{
+  "type": "object",
+  "properties": {
+    "title": {"type": "string"},
+    "cuisine": {"type": "string"},
+    "servings": {"type": "integer"},
+    "prepTimeMinutes": {"type": "integer"},
+    "cookTimeMinutes": {"type": "integer"},
+    "difficulty": {"type": "string"},
+    "ingredients": {"type": "array", "items": {"type": "string"}},
+    "instructions": {"type": "array", "items": {"type": "string"}}
+  },
+  "required": ["title", "ingredients", "instructions"]
+}

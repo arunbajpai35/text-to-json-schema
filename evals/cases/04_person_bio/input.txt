@@ -1,0 +1,15 @@
+Name: Dr. Maya Krishnan
+Current Role: Principal Research Scientist
+Employer: NeuroGrid Labs
+Location: Berlin, Germany
+
+Education:
+- PhD, Computational Neuroscience, ETH Zurich, 2014
+- MSc, Applied Mathematics, Indian Institute of Science, 2009
+- BSc, Physics, University of Delhi, 2007
+
+Years of Experience: 12
+
+Skills: PyTorch, JAX, Triton, distributed training, diffusion models, mechanistic interpretability
+
+Languages: English, German, Hindi, Tamil

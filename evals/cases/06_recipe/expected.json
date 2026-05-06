@@ -1,0 +1,29 @@
+{
+  "title": "Garlic Butter Shrimp Pasta",
+  "cuisine": "Italian-American",
+  "servings": 4,
+  "prepTimeMinutes": 10,
+  "cookTimeMinutes": 20,
+  "difficulty": "Easy",
+  "ingredients": [
+    "400 grams linguine pasta",
+    "500 grams large shrimp, peeled and deveined",
+    "6 cloves garlic, minced",
+    "60 grams unsalted butter",
+    "30 milliliters olive oil",
+    "120 milliliters dry white wine",
+    "1 teaspoon red pepper flakes",
+    "30 grams flat-leaf parsley, chopped",
+    "1 lemon, zested and juiced",
+    "Salt to taste",
+    "Black pepper to taste"
+  ],
+  "instructions": [
+    "Bring a large pot of salted water to a boil and cook linguine until al dente.",
+    "Heat olive oil and butter in a large skillet over medium heat.",
+    "Add garlic and red pepper flakes; cook for 30 seconds until fragrant.",
+    "Add shrimp and cook 2 minutes per side until pink.",
+    "Pour in white wine and lemon juice; simmer for 2 minutes.",
+    "Toss in drained pasta, parsley, and lemon zest. Season with salt and pepper."
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "properties": {
+    "title": {"type": "string"},
+    "company": {"type": "string"},
+    "location": {"type": "string"},
+    "employmentType": {"type": "string"},
+    "yearsRequired": {"type": "integer"},
+    "salaryRange": {
+      "type": "object",
+      "properties": {
+        "min": {"type": "number"},
+        "max": {"type": "number"},
+        "unit": {"type": "string"},
+        "currency": {"type": "string"}
+      }
+    },
+    "responsibilities": {"type": "array", "items": {"type": "string"}},
+    "requirements": {"type": "array", "items": {"type": "string"}},
+    "niceToHave": {"type": "array", "items": {"type": "string"}}
+  },
+  "required": ["title", "company", "requirements"]
+}

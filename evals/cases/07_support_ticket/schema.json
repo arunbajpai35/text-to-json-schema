@@ -1,0 +1,23 @@
+{
+  "type": "object",
+  "properties": {
+    "ticketId": {"type": "string"},
+    "subject": {"type": "string"},
+    "priority": {"type": "string"},
+    "category": {"type": "string"},
+    "status": {"type": "string"},
+    "customer": {
+      "type": "object",
+      "properties": {
+        "name": {"type": "string"},
+        "email": {"type": "string"},
+        "tier": {"type": "string"},
+        "accountId": {"type": "string"}
+      }
+    },
+    "issue": {"type": "string"},
+    "requestedAction": {"type": "string"},
+    "affectedUsers": {"type": "integer"}
+  },
+  "required": ["ticketId", "priority", "issue"]
+}

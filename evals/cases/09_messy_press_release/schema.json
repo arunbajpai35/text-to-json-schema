@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "properties": {
+    "productName": {"type": "string"},
+    "manufacturer": {"type": "string"},
+    "launchDate": {"type": "string"},
+    "startingPriceUSD": {"type": "number"},
+    "weightKg": {"type": "number"},
+    "batteryLifeMinutes": {"type": "integer"},
+    "maxCoverageSquareMeters": {"type": "integer"},
+    "colorways": {"type": "array", "items": {"type": "string"}},
+    "supportedVoiceAssistants": {"type": "array", "items": {"type": "string"}},
+    "company": {
+      "type": "object",
+      "properties": {
+        "headquarters": {"type": "string"},
+        "founded": {"type": "integer"},
+        "founders": {"type": "array", "items": {"type": "string"}},
+        "totalFundingUSDMillions": {"type": "number"}
+      }
+    }
+  },
+  "required": ["productName", "manufacturer"]
+}
