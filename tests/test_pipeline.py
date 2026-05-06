@@ -38,22 +38,48 @@ def test_pipeline_merges_data_across_chunks(monkeypatch):
     assert failed == []
 
 
-def test_pipeline_records_invalid_json_chunks(monkeypatch):
+def test_pipeline_repairs_invalid_json_on_retry(monkeypatch):
+    """A bad-JSON response triggers one repair attempt with the parse error."""
     monkeypatch.setattr("main.sleep", lambda *_: None)
-    monkeypatch.setattr(SchemaProcessor, "optimize_chunk_size", lambda *_: 2)
     client = MagicMock()
-    client.get_completion.side_effect = [
-        "not json at all",
-        json.dumps({"name": "ok"}),
-    ]
+    client.get_completion.side_effect = ["not json", json.dumps({"name": "ok"})]
 
     result, failed = process_with_schema(
-        "a\nb\nc\nd", SCHEMA, client, SchemaProcessor()
+        "single line", SCHEMA, client, SchemaProcessor()
     )
 
+    assert client.get_completion.call_count == 2
+    repair_prompt = client.get_completion.call_args_list[1].args[0]
+    assert "failed to parse as JSON" in repair_prompt
     assert result == {"name": "ok"}
+    assert failed == []
+
+
+def test_pipeline_records_chunks_that_fail_repair(monkeypatch):
+    """If repair also returns invalid JSON, the chunk goes to the sidecar."""
+    monkeypatch.setattr("main.sleep", lambda *_: None)
+    client = MagicMock()
+    client.get_completion.side_effect = ["not json", "still not json"]
+
+    result, failed = process_with_schema(
+        "single line", SCHEMA, client, SchemaProcessor()
+    )
+
+    assert result == {}
     assert len(failed) == 1
     assert "JSON decode error" in failed[0]["error"]
+
+
+def test_pipeline_honors_explicit_chunk_size(monkeypatch):
+    monkeypatch.setattr("main.sleep", lambda *_: None)
+    # heuristic would default to 3000 for this schema; force it down
+    client = _client_returning({"name": "a"}, {"name": "b"})
+
+    process_with_schema(
+        "a\nb\nc\nd", SCHEMA, client, SchemaProcessor(), chunk_size=2
+    )
+
+    assert client.get_completion.call_count == 2
 
 
 def test_pipeline_merges_partial_chunks_into_schema_valid_whole(monkeypatch):
