@@ -84,17 +84,7 @@ def process_with_schema(
         result = ""
         try:
             result = client.get_completion(system_prompt, chunk)
-            parsed = json.loads(result)
-            if processor.validate_against_schema(parsed, schema):
-                chunk_results.append(parsed)
-            else:
-                log.warning("chunk %d failed schema validation", idx + 1)
-                failed_chunks.append({
-                    "chunk_index": idx,
-                    "raw_output": result,
-                    "error": "Schema validation failed",
-                    "validation_errors": processor.get_validation_errors(),
-                })
+            chunk_results.append(json.loads(result))
             sleep(1)
         except json.JSONDecodeError as e:
             log.warning("chunk %d invalid json: %s", idx + 1, e)
@@ -112,6 +102,11 @@ def process_with_schema(
             })
 
     final_result = processor.merge_chunk_results(chunk_results, schema)
+    if not processor.validate_against_schema(final_result, schema):
+        log.warning(
+            "merged output does not match schema: %s",
+            "; ".join(processor.get_validation_errors()),
+        )
     return final_result, failed_chunks
 
 

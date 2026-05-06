@@ -18,15 +18,15 @@ python main.py --input samples/input_large.txt \
 2. Inspect the schema (depth, field count) and pick a chunk size — denser schemas get smaller chunks so the model has more headroom per call.
 3. Token-chunk the input with `tiktoken` (`cl100k_base`).
 4. For each chunk, send a system prompt that embeds the schema and ask the model for a JSON object. JSON mode is enabled on the API call.
-5. Validate each chunk's output against the schema with `jsonschema`. Drop failed chunks into a `*_failed_chunks.json` sidecar so you can inspect them.
-6. Deep-merge the surviving chunks into one object: dicts merge recursively, arrays concatenate, and on scalar conflicts the first non-null value wins.
+5. Deep-merge each chunk's parsed JSON into one object: dicts merge recursively, arrays concatenate, and on scalar conflicts the first non-null value wins.
+6. Validate the merged result against the schema. If a chunk's response wasn't valid JSON it lands in a `*_failed_chunks.json` sidecar; if the merged whole doesn't match the schema, the partial result is still written and a warning is logged.
 
 ## design choices
 
 - **schema embedded in the prompt, not derived from the text.** A fuzzy free-form extraction would have been simpler but the assignment is specifically about hitting a target shape — pinning the schema in the system prompt keeps the model honest.
 - **chunk-then-merge instead of streaming a single huge call.** Lets the tool handle inputs that don't fit the model context window. The trade-off is that the merge step has to actually be correct (early versions kept only the first chunk — fixed).
 - **first non-null wins on scalar conflicts.** The input is read top-to-bottom; the first mention of a value is usually the canonical one. Last-wins would let later, parenthetical mentions overwrite the headline value.
-- **per-chunk validation, not just final.** Failing fast on a single bad chunk keeps a corrupted extraction out of the merged output, and the failed-chunk sidecar makes prompt regressions debuggable.
+- **validate the merged whole, not each chunk.** Required fields are usually scattered across the input; an early version validated each chunk in isolation and threw away every chunk that lacked a required field, ending up with `{}`. The merge happens first, schema validation runs on the result, and the partial output is preserved with a warning even if it falls short.
 
 ## what this is not
 

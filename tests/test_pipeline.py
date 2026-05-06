@@ -56,23 +56,42 @@ def test_pipeline_records_invalid_json_chunks(monkeypatch):
     assert "JSON decode error" in failed[0]["error"]
 
 
-def test_pipeline_records_schema_violations(monkeypatch):
+def test_pipeline_merges_partial_chunks_into_schema_valid_whole(monkeypatch):
+    """No individual chunk satisfies `required`, but the merged output does."""
     monkeypatch.setattr("main.sleep", lambda *_: None)
-    monkeypatch.setattr(
-        SchemaProcessor, "optimize_chunk_size", lambda *_: 5
+    monkeypatch.setattr(SchemaProcessor, "optimize_chunk_size", lambda *_: 2)
+    schema = {
+        "type": "object",
+        "properties": {
+            "name": {"type": "string"},
+            "price": {"type": "number"},
+        },
+        "required": ["name", "price"],
+    }
+    client = _client_returning({"name": "widget"}, {"price": 9.99})
+
+    result, failed = process_with_schema(
+        "a\nb\nc\nd", schema, client, SchemaProcessor()
     )
+
+    assert result == {"name": "widget", "price": 9.99}
+    assert failed == []
+
+
+def test_pipeline_returns_partial_result_when_merged_output_invalid(monkeypatch, caplog):
+    monkeypatch.setattr("main.sleep", lambda *_: None)
     schema = {
         "type": "object",
         "properties": {"name": {"type": "string"}},
         "required": ["name"],
-        "additionalProperties": False,
     }
-    client = _client_returning({"unexpected": 1})
+    client = _client_returning({"other": 1})
 
-    result, failed = process_with_schema(
-        "single line", schema, client, SchemaProcessor(), chunk_size=10
-    )
+    with caplog.at_level("WARNING"):
+        result, failed = process_with_schema(
+            "single line", schema, client, SchemaProcessor()
+        )
 
-    assert result == {}
-    assert len(failed) == 1
-    assert failed[0]["error"] == "Schema validation failed"
+    assert result == {"other": 1}
+    assert failed == []
+    assert any("does not match schema" in r.message for r in caplog.records)
