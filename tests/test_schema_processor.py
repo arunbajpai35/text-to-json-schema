@@ -46,6 +46,21 @@ def test_validate_against_schema():
     assert p.get_validation_errors()
 
 
+def test_analyze_schema_complexity_handles_nullable_types():
+    """JSON Schema allows `type` to be a list, e.g. ['string', 'null']."""
+    p = SchemaProcessor()
+    schema = {
+        "type": "object",
+        "properties": {
+            "name": {"type": "string"},
+            "isbn": {"type": ["string", "null"]},
+        },
+    }
+    out = p.analyze_schema_complexity(schema)
+    assert out["field_types"]["string"] >= 2
+    assert out["field_types"]["null"] == 1
+
+
 def test_analyze_schema_complexity_counts_depth():
     p = SchemaProcessor()
     schema = {
