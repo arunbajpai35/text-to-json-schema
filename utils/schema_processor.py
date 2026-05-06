@@ -106,8 +106,10 @@ Instructions:
         def analyze_types(obj):
             if isinstance(obj, dict):
                 if "type" in obj:
-                    field_type = obj["type"]
-                    field_types[field_type] = field_types.get(field_type, 0) + 1
+                    # JSON Schema permits `type` to be a list (e.g. ["string", "null"]).
+                    types = obj["type"] if isinstance(obj["type"], list) else [obj["type"]]
+                    for t in types:
+                        field_types[t] = field_types.get(t, 0) + 1
                 if "properties" in obj:
                     for field_schema in obj["properties"].values():
                         analyze_types(field_schema)
