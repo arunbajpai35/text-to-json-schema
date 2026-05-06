@@ -52,26 +52,18 @@ class SchemaProcessor:
         Create a prompt that includes the target schema
         """
         schema_str = json.dumps(schema, indent=2)
-        return f"""
-You are a smart AI agent that converts unstructured text into structured JSON format.
+        return f"""You convert unstructured text into structured JSON.
 
-IMPORTANT: The output MUST strictly follow the provided JSON schema. Do not add extra fields or modify the structure.
+The output MUST strictly follow the provided JSON schema. Do not add extra fields or modify the structure.
 
 Target Schema:
 {schema_str}
 
 Instructions:
-1. Read and understand the input text
-2. Extract relevant information
-3. Structure the data EXACTLY according to the target schema
-4. Ensure all required fields are present
-5. Validate that the output matches the schema structure
-
-Input:
-{{input_text}}
-
-Output:
-Return ONLY a valid JSON object that matches the target schema exactly. No explanations or additional text.
+1. Read the input text carefully.
+2. Extract values that map to the schema fields.
+3. Return a single JSON object that matches the schema exactly — no prose, no markdown.
+4. If a required field is not present in the text, leave it null rather than inventing a value.
 """
     
     def extract_schema_fields(self, schema: Dict[str, Any]) -> List[str]:
