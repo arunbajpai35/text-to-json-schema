@@ -1,0 +1,18 @@
+{
+  "productInformation": {
+    "name": "Advanced Wireless Headphones",
+    "model": "WH-1000XM5",
+    "brand": "Sony",
+    "category": "Electronics",
+    "price": 349.99,
+    "color": "Black",
+    "weight": "250 grams",
+    "batteryLife": "30 hours",
+    "warranty": "1 year limited warranty",
+    "availability": "In Stock",
+    "sku": "SONY-WH1000XM5-BLK",
+    "manufacturer": "Sony Corporation",
+    "countryOfOrigin": "Japan",
+    "releaseDate": "2022-05-13"
+  }
+}

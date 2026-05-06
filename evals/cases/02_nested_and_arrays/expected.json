@@ -1,0 +1,19 @@
+{
+  "productInformation": {
+    "name": "MacBook Pro 14\"",
+    "model": "MBP14-M3-Pro",
+    "brand": "Apple",
+    "category": "Computers",
+    "price": 1999.00,
+    "dimensions": {
+      "length": 22.12,
+      "width": 31.26,
+      "height": 1.55,
+      "unit": "cm"
+    },
+    "connectivity": ["Wi-Fi 6E", "Bluetooth 5.3", "Thunderbolt 4", "HDMI", "MagSafe 3"],
+    "features": ["Liquid Retina XDR display", "ProMotion", "Spatial Audio"],
+    "compatibility": ["macOS Sonoma", "iOS", "iPadOS"],
+    "packageContents": ["Laptop", "USB-C charge cable", "96W USB-C adapter"]
+  }
+}

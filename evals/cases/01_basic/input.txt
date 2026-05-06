@@ -1,0 +1,16 @@
+Product Information
+
+Name: Advanced Wireless Headphones
+Model: WH-1000XM5
+Brand: Sony
+Category: Electronics
+Price: 349.99
+Color: Black
+Weight: 250 grams
+Battery Life: 30 hours
+Warranty: 1 year limited warranty
+Availability: In Stock
+SKU: SONY-WH1000XM5-BLK
+Manufacturer: Sony Corporation
+Country of Origin: Japan
+Release Date: 2022-05-13

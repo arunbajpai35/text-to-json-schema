@@ -1,0 +1,14 @@
+Laptop Specs
+
+Name: MacBook Pro 14"
+Model: MBP14-M3-Pro
+Brand: Apple
+Category: Computers
+Price: 1999.00
+
+Dimensions: 31.26 cm wide, 22.12 cm deep, 1.55 cm thick.
+
+Connectivity: Wi-Fi 6E, Bluetooth 5.3, Thunderbolt 4, HDMI, MagSafe 3
+Features: Liquid Retina XDR display, ProMotion, Spatial Audio
+Compatibility: macOS Sonoma, iOS, iPadOS
+Package Contents: Laptop, USB-C charge cable, 96W USB-C adapter

@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "properties": {
+    "productInformation": {
+      "type": "object",
+      "properties": {
+        "name": {"type": "string"},
+        "model": {"type": "string"},
+        "brand": {"type": "string"},
+        "category": {"type": "string"},
+        "price": {"type": "number"},
+        "color": {"type": "string"},
+        "warranty": {"type": "string"},
+        "availability": {"type": "string"},
+        "sku": {"type": "string"},
+        "manufacturer": {"type": "string"},
+        "countryOfOrigin": {"type": "string"},
+        "releaseDate": {"type": "string"},
+        "connectivity": {"type": "array", "items": {"type": "string"}}
+      },
+      "required": ["name", "model", "brand", "category", "price"]
+    }
+  },
+  "required": ["productInformation"]
+}

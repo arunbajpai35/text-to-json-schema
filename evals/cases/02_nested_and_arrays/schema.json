@@ -1,0 +1,30 @@
+{
+  "type": "object",
+  "properties": {
+    "productInformation": {
+      "type": "object",
+      "properties": {
+        "name": {"type": "string"},
+        "model": {"type": "string"},
+        "brand": {"type": "string"},
+        "category": {"type": "string"},
+        "price": {"type": "number"},
+        "dimensions": {
+          "type": "object",
+          "properties": {
+            "length": {"type": "number"},
+            "width": {"type": "number"},
+            "height": {"type": "number"},
+            "unit": {"type": "string"}
+          }
+        },
+        "connectivity": {"type": "array", "items": {"type": "string"}},
+        "features": {"type": "array", "items": {"type": "string"}},
+        "compatibility": {"type": "array", "items": {"type": "string"}},
+        "packageContents": {"type": "array", "items": {"type": "string"}}
+      },
+      "required": ["name", "model", "brand", "category", "price"]
+    }
+  },
+  "required": ["productInformation"]
+}
