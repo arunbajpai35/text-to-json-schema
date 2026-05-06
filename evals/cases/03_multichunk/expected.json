@@ -1,0 +1,17 @@
+{
+  "productInformation": {
+    "name": "Aurora Smart Speaker",
+    "model": "AUR-SS-2024",
+    "brand": "Lyra",
+    "category": "Audio",
+    "price": 149.99,
+    "color": "white",
+    "warranty": "2 year limited warranty",
+    "availability": "Pre-order",
+    "sku": "LYRA-AUR-SS-WHT",
+    "manufacturer": "Lyra Acoustics, Ltd.",
+    "countryOfOrigin": "Vietnam",
+    "releaseDate": "2024-09-15",
+    "connectivity": ["Wi-Fi 6", "Bluetooth 5.2", "Matter"]
+  }
+}

@@ -1,0 +1,29 @@
+Internal stocking memo, FY24Q3
+
+This document covers ingestion of a new SKU into the catalog. The procurement team has finalized terms with the supplier and the device clears the import compliance review on the dates shown below. Distribution will follow the standard cold-chain protocol because the unit ships with a lithium battery; warehouses are advised to keep the staging area below 30 C until the units are in retail packaging.
+
+The unit being onboarded is the Aurora Smart Speaker, a mid-range networked audio device with a built-in voice assistant. It targets the home segment and the team has positioned it under the Lyra brand alongside the existing Lyra Hub line. Internal SKU is LYRA-AUR-SS-WHT for the white colorway, which is the only colorway available at launch.
+
+The device runs Lyra OS 4.2 and supports Wi-Fi, Bluetooth, and Matter for smart-home interop.
+
+[... a lot of supplier and logistics narrative omitted from this case for brevity ...]
+
+Quick Reference Sheet
+
+Name: Aurora Smart Speaker
+Model: AUR-SS-2024
+Brand: Lyra
+Category: Audio
+
+Wholesale price: 89.50 USD per unit. Retail price will be confirmed by the pricing team but the catalog entry should record the retail price agreed with channel partners, which is 149.99 USD.
+
+Warranty terms: 2 year limited warranty covering manufacturing defects and battery degradation under normal usage.
+
+Country of origin: Vietnam. Manufacturer of record: Lyra Acoustics, Ltd.
+
+Release Date: 2024-09-15
+Availability: Pre-order
+
+Connectivity is over Wi-Fi 6, Bluetooth 5.2, and Matter; the device exposes a USB-C port for service only and is not user-serviceable.
+
+End of memo.

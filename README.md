@@ -42,6 +42,16 @@ pytest
 
 LLM calls are mocked; the suite runs without azure credentials.
 
+## evals
+
+`evals/` is a small hand-labeled benchmark — a handful of `(input, schema, expected)` cases. The scorer flattens the expected output to dotted leaf paths and compares each one (arrays compared as multisets, so order doesn't matter). Runs against the live model:
+
+```bash
+python -m evals.run
+```
+
+Writes a per-case + overall accuracy report to `evals/results.json`. The scorer itself is covered by the pytest suite.
+
 ## stack
 
 python · azure openai (gpt-4o family) · tiktoken · jsonschema · backoff · pytest

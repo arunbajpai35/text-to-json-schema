@@ -12,3 +12,4 @@ samples/output.json
 samples/failed_chunks.json
 samples/input_50k_tokens.txt
 *_failed_chunks.json
+evals/results.json
